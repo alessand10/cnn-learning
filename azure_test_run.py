@@ -70,8 +70,8 @@ job = command(
     compute=gpu_compute_target,
     environment=curated_env_name,
     code="./",
-    command="python gan",
-    experiment_name="tf-dnn-image-classify",
+    command="python simple_nn.py",
+    experiment_name="test-experiment",
     display_name="simple-nn",
 )
 
