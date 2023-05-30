@@ -7,12 +7,15 @@ from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential,
 from azure.ai.ml.entities import AmlCompute
 
 credential = InteractiveBrowserCredential(tenant_id='0a37665b-0281-435e-b91c-b08fd4915ab6')
+sub_id = "b33e645c-f2fe-44b5-9f89-748adb0757e2"
+ws_name = "TestWorkspace"
+
 
 ml_client = MLClient(
     credential=credential,
-    subscription_id="b33e645c-f2fe-44b5-9f89-748adb0757e2",
+    subscription_id=sub_id,
     resource_group_name="NN",
-    workspace_name="TestWorkspace",
+    workspace_name=ws_name,
 )
 
 gpu_compute_target = "gpu-cluster"
@@ -60,22 +63,43 @@ curated_env_name = "AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest"
 web_path = "wasbs://datasets@azuremlexamples.blob.core.windows.net/mnist/"
 
 
+from azureml.core.environment import CondaDependencies
+from azureml.core import Environment
 
-from azure.ai.ml import command
-from azure.ai.ml import UserIdentityConfiguration
-from azure.ai.ml import Input
-''' Build the job '''
+from azureml.core import Workspace
 
-job = command(
-    compute=gpu_compute_target,
-    environment=curated_env_name,
-    code="./",
-    command="python simple_nn.py",
-    experiment_name="test-experiment",
-    display_name="simple-nn",
+ws = Workspace.get(
+    name=ws_name,
+    subscription_id=sub_id,
+    resource_group='NN',
 )
 
-''' Submit the job '''
-ml_client.jobs.create_or_update(job)
+
+
+
+myenv = Environment(name='MyEnv50')
+conda_dep = CondaDependencies()
+conda_dep.add_conda_package('pip')
+conda_dep.add_pip_package('numpy==1.22.0')
+conda_dep.add_pip_package('tensorflow==2.12.0')
+conda_dep.add_pip_package('opencv-python==4.7.0.72')
+conda_dep.add_pip_package('matplotlib==3.7.1')
+myenv.python.conda_dependencies=conda_dep
+myenv.version='1'
+# envObj = myenv.register(ws)
+
+
+
+from azureml.core import ScriptRunConfig, Experiment
+from azure.ai.ml import command
+
+myexp = Experiment(workspace=ws, name = "environment-example")
+src = ScriptRunConfig(source_directory="./",
+                      script="gan_test.py",
+                      compute_target=ws.compute_targets['simple'],
+                      environment=myenv)
+
+run = myexp.submit(config=src)
+run.wait_for_completion(show_output=True)
 
 a=5
