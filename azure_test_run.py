@@ -59,8 +59,6 @@ print(
 
 '''Create Job Environment for job'''
 
-curated_env_name = "AzureML-tensorflow-2.7-ubuntu20.04-py38-cuda11-gpu@latest"
-web_path = "wasbs://datasets@azuremlexamples.blob.core.windows.net/mnist/"
 
 
 from azureml.core.environment import CondaDependencies
@@ -77,7 +75,7 @@ ws = Workspace.get(
 
 
 
-myenv = Environment(name='MyEnv80')
+myenv = Environment(name='MyEnv81')
 conda_dep = CondaDependencies()
 conda_dep.add_conda_package('pip')
 conda_dep.add_pip_package('numpy==1.22.0')
