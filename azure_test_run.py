@@ -75,7 +75,7 @@ ws = Workspace.get(
 
 
 
-myenv = Environment(name='MyEnv90')
+myenv = Environment(name='MyEnv91')
 conda_dep = CondaDependencies()
 conda_dep.add_conda_package('pip')
 conda_dep.add_pip_package('numpy==1.22.0')

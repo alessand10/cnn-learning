@@ -4,8 +4,6 @@ ENV CONDA_PREFIX=/azureml-envs/MyEnv90
 ENV CONDA_DEFAULT_ENV=$CONDA_PREFIX
 ENV PATH=$CONDA_PREFIX/bin:$PATH
 
-# Create conda environment
-COPY conda_dependencies.yaml .
 
 RUN apt-get update && apt-get install libgl1
 
