@@ -59,8 +59,6 @@ print(
 
 '''Create Job Environment for job'''
 
-
-
 from azureml.core.environment import CondaDependencies
 from azureml.core import Environment
 
@@ -73,17 +71,15 @@ ws = Workspace.get(
 )
 
 
-
-
-myenv = Environment(name='MyEnv99')
+myenv = Environment(name='MyEnv100')
 conda_dep = CondaDependencies()
 conda_dep.add_conda_package('pip')
 conda_dep.add_pip_package('numpy==1.22.0')
 conda_dep.add_pip_package('tensorflow==2.12.0')
 conda_dep.add_pip_package('matplotlib==3.7.1')
 conda_dep.add_pip_package('opencv-python-headless')
-myenv.docker.base_dockerfile = './Dockerfile'
-myenv.docker.base_image = None
+# myenv.docker.base_dockerfile = './Dockerfile'
+# myenv.docker.base_image = None
 myenv.python.conda_dependencies=conda_dep
 myenv.version='1'
 # envObj = myenv.register(ws)
